@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TP1_2</string>
+    <string name="ComputeTxt">Calculer\n</string>
+    <string name="btnPlusTxt">+</string>
+    <string name="btnMinusTxt">-</string>
+    <string name="btnStarTxt">*</string>
+    <string name="btnDividetxt">/</string>
+    <string name="Operand1Txt">Opérand1</string>
+    <string name="Operand2Txt">Opérand2</string>
+    <string name="resultTxt">Résultats</string>
+    <string name="currentOperand">+</string>
+</resources>

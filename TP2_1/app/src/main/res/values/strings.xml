@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TP2_1</string>
+    <string-array name="domains_array">
+        <item>Science</item>
+        <item>Mathematics</item>
+        <item>Domain1</item>
+        <item>Domain2</item>
+    </string-array>
+</resources>

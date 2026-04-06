@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TP1</string>
+    <string name="euroAmountTxt">Quantité en €\n</string>
+    <string name="dollarAmountTxt">Quantité en $\n</string>
+    <string name="rateTxt"> Conversion Euro/Dollars </string>
+    <string name="convertTxt">Convertir\n</string>
+</resources>
