@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,26 +14,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Projet">
+
+        <activity
+            android:name=".TripDisplay"
+            android:label="@string/title_activity_trip_display"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ModPlace"
-            android:label="Edit Places"
+            android:label="@string/title_activity_mod_place"
             android:exported="false" />
+
         <activity
             android:name=".PlaceDisplay"
-            android:label="Places List"
-            android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:label="@string/title_activity_place_display"
+            android:exported="false" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
         <activity
             android:name=".ModTrip"
-            android:label="Edit Trip"
-            android:exported="false">
+            android:label="@string/title_activity_mod_trip"
+            android:exported="false" />
 
-        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:exported="false" />
+
+        <service
+            android:name=".MusicService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver android:name=".NotificationReceiver"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -8,10 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
-    private static final String DB_NAME = "places.db";
-    private static final int DB_VERSION = 2;
+    private static final String DB_NAME = "trip_database.db";
+    private static final int DB_VERSION = 5;
 
-    public static final String TABLE_NAME = "places";
+    // Places Table
+    public static final String TABLE_PLACES = "places";
     public static final String COL_ID = "_id";
     public static final String COL_TITLE = "title";
     public static final String COL_DESC = "description";
@@ -21,8 +22,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_PHONE = "phone";
     public static final String COL_PHOTO = "photo";
     public static final String COL_VISITED = "visited";
+    public static final String COL_TRIP_ID = "trip_id";
 
-    private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
+    // Trips Table
+    public static final String TABLE_TRIPS = "trips";
+    public static final String COL_TRIP_CITY = "city";
+    public static final String COL_TRIP_START = "start_date";
+    public static final String COL_TRIP_END = "end_date";
+
+    private static final String CREATE_TABLE_TRIPS = "CREATE TABLE " + TABLE_TRIPS + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_TRIP_CITY + " TEXT, " +
+            COL_TRIP_START + " TEXT, " +
+            COL_TRIP_END + " TEXT);";
+
+    private static final String CREATE_TABLE_PLACES = "CREATE TABLE " + TABLE_PLACES + " (" +
             COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COL_TITLE + " TEXT, " +
             COL_DESC + " TEXT, " +
@@ -31,7 +45,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_ADDRESS + " TEXT, " +
             COL_PHONE + " TEXT, " +
             COL_PHOTO + " TEXT, " +
-            COL_VISITED + " INTEGER DEFAULT 0);";
+            COL_VISITED + " INTEGER DEFAULT 0, " +
+            COL_TRIP_ID + " INTEGER, " +
+            "FOREIGN KEY(" + COL_TRIP_ID + ") REFERENCES " + TABLE_TRIPS + "(" + COL_ID + ") ON DELETE CASCADE);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -39,12 +55,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE_TRIPS);
+        db.execSQL(CREATE_TABLE_PLACES);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLACES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIPS);
         onCreate(db);
     }
 
@@ -52,7 +76,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getWritableDatabase();
     }
 
-    public void add(Place place) {
+    // Place Methods
+    public void add(Place place, long tripId) {
         ContentValues values = new ContentValues();
         values.put(COL_TITLE, place.getTitle());
         values.put(COL_DESC, place.getDescription());
@@ -62,14 +87,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_PHONE, place.getPhone());
         values.put(COL_PHOTO, place.getPhoto());
         values.put(COL_VISITED, place.isVisited() ? 1 : 0);
+        values.put(COL_TRIP_ID, tripId);
 
-        database.insert(TABLE_NAME, null, values);
+        database.insert(TABLE_PLACES, null, values);
     }
 
-    public Cursor getAllPlaces(){
-        String[] projection = {COL_ID, COL_TITLE, COL_DESC, COL_DATE, COL_TIME, COL_ADDRESS, COL_PHONE, COL_PHOTO, COL_VISITED};
-        Cursor cursor = database.query(TABLE_NAME, projection, null, null, null, null, null, null);
-        return cursor;
+    public Cursor getPlacesByTrip(long tripId) {
+        return database.query(TABLE_PLACES, null, COL_TRIP_ID + " = ?", new String[]{String.valueOf(tripId)}, null, null, null);
     }
 
     public void update(Place place) {
@@ -83,10 +107,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_PHOTO, place.getPhoto());
         contentValues.put(COL_VISITED, place.isVisited() ? 1 : 0);
         
-        database.update(TABLE_NAME, contentValues, COL_ID + " = ?", new String[]{String.valueOf(place.getId())});
+        database.update(TABLE_PLACES, contentValues, COL_ID + " = ?", new String[]{String.valueOf(place.getId())});
     }
 
     public void delete(long id) {
-        database.delete(TABLE_NAME, COL_ID + " = ?", new String[]{String.valueOf(id)});
+        database.delete(TABLE_PLACES, COL_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    // Trip Methods
+    public long addTrip(Trip trip) {
+        ContentValues values = new ContentValues();
+        values.put(COL_TRIP_CITY, trip.getCity());
+        values.put(COL_TRIP_START, trip.getStartDate());
+        values.put(COL_TRIP_END, trip.getEndDate());
+        return database.insert(TABLE_TRIPS, null, values);
+    }
+
+    public Cursor getAllTrips() {
+        return database.query(TABLE_TRIPS, null, null, null, null, null, null);
+    }
+
+    public Trip getTripById(long id) {
+        Cursor cursor = database.query(TABLE_TRIPS, null, COL_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            String city = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRIP_CITY));
+            String start = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRIP_START));
+            String end = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRIP_END));
+            cursor.close();
+            return new Trip(id, city, start, end);
+        }
+        if (cursor != null) cursor.close();
+        return null;
+    }
+
+    public void updateTrip(Trip trip) {
+        ContentValues values = new ContentValues();
+        values.put(COL_TRIP_CITY, trip.getCity());
+        values.put(COL_TRIP_START, trip.getStartDate());
+        values.put(COL_TRIP_END, trip.getEndDate());
+        database.update(TABLE_TRIPS, values, COL_ID + " = ?", new String[]{String.valueOf(trip.getId())});
+    }
+
+    public void deleteTrip(long id) {
+        database.delete(TABLE_TRIPS, COL_ID + " = ?", new String[]{String.valueOf(id)});
     }
 }

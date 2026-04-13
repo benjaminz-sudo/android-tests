@@ -14,7 +14,7 @@ public class Place implements Parcelable {
     private String photo;
     private boolean visited;
 
-    public Place(long id, String title, String description, String date, String time, String address, String phone, boolean visited) {
+    public Place(long id, String title, String description, String date, String time, String address, String phone, String photo, boolean visited) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -22,12 +22,12 @@ public class Place implements Parcelable {
         this.time = time;
         this.address = address;
         this.phone = phone;
+        this.photo = photo;
         this.visited = visited;
     }
 
-    // Constructor without ID (for new places)
-    public Place(String title, String description, String date, String time, String address, String phone, boolean visited) {
-        this(-1, title, description, date, time, address, phone, visited);
+    public Place(String title, String description, String date, String time, String address, String phone, String photo, boolean visited) {
+        this(-1, title, description, date, time, address, phone, photo, visited);
     }
 
     protected Place(Parcel in) {
@@ -72,75 +72,22 @@ public class Place implements Parcelable {
         }
     };
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
+    public String getTime() { return time; }
+    public void setTime(String time) { this.time = time; }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public String getPhoto() { return photo; }
+    public void setPhoto(String photo) { this.photo = photo; }
+    public boolean isVisited() { return visited; }
+    public void setVisited(boolean visited) { this.visited = visited; }
 }

@@ -13,21 +13,38 @@
         android:padding="16dp"
         tools:context=".ModPlace">
 
+        <ImageView
+            android:id="@+id/ivPlacePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnPickPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPlacePhoto" />
+
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/title_hint"
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/btnPickPhoto" />
 
         <EditText
             android:id="@+id/etDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Description"
+            android:hint="@string/description_hint"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +54,9 @@
             android:id="@+id/etDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Date (YYYY-MM-DD)"
+            android:hint="@string/date_hint"
             android:inputType="date"
             android:focusable="false"
-            android:clickable="false"
             app:layout_constraintEnd_toStartOf="@+id/btnPickDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etDescription" />
@@ -49,7 +65,7 @@
             android:id="@+id/btnPickDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pick Date"
+            android:text="@string/pick"
             app:layout_constraintBottom_toBottomOf="@+id/etDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/etDate" />
@@ -58,10 +74,9 @@
             android:id="@+id/etTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Time (Optional)"
+            android:hint="@string/time_hint"
             android:inputType="time"
             android:focusable="false"
-            android:clickable="false"
             app:layout_constraintEnd_toStartOf="@+id/btnPickTime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etDate" />
@@ -70,7 +85,7 @@
             android:id="@+id/btnPickTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pick Time"
+            android:text="@string/pick"
             app:layout_constraintBottom_toBottomOf="@+id/etTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/etTime" />
@@ -79,37 +94,54 @@
             android:id="@+id/etAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Address"
+            android:hint="@string/address_hint"
             android:inputType="textPostalAddress"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnShowMap"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etTime" />
+
+        <ImageButton
+            android:id="@+id/btnShowMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_dialog_map"
+            app:layout_constraintBottom_toBottomOf="@+id/etAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etAddress" />
 
         <EditText
             android:id="@+id/etPhone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Phone (Optional)"
+            android:hint="@string/phone_hint"
             android:inputType="phone"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnCall"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etAddress" />
+
+        <ImageButton
+            android:id="@+id/btnCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_call"
+            app:layout_constraintBottom_toBottomOf="@+id/etPhone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etPhone" />
 
         <CheckBox
             android:id="@+id/cbVisited"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Visited"
+            android:text="@string/visited"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etPhone" />
 
         <Button
             android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Place"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:text="@string/save_place"
             app:layout_constraintTop_toBottomOf="@id/cbVisited" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
